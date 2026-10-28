@@ -1,0 +1,26 @@
+---
+import ContactForm from '../components/ContactForm.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<main>
+		<h1>联系我们</h1>
+		<ContactForm />
+	</main>
+</Layout>
+
+<style>
+	main {
+		display: grid;
+		justify-items: center;
+		gap: 24px;
+		padding: 48px 16px;
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+	}
+
+	h1 {
+		margin: 0;
+		font-size: 24px;
+	}
+</style>

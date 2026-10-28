@@ -1,0 +1,103 @@
+<form id="contact-form" method="post" action="/api/contact">
+	<label>
+		姓名
+		<input name="name" maxlength="100" required />
+	</label>
+	<label>
+		邮箱
+		<input name="email" type="email" required />
+	</label>
+	<label>
+		留言
+		<textarea name="message" rows="6" maxlength="5000" required></textarea>
+	</label>
+	<input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+	<button type="submit">发送</button>
+	<p id="contact-status" role="status"></p>
+</form>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('#contact-form');
+	const status = document.querySelector<HTMLParagraphElement>('#contact-status');
+	const button = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+	form?.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		if (!status || !button) return;
+
+		button.disabled = true;
+		status.dataset.state = '';
+		status.textContent = '发送中…';
+
+		try {
+			const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+			const data = await res.json();
+			if (!data.ok) throw new Error(data.error);
+			form.reset();
+			status.dataset.state = 'ok';
+			status.textContent = '已发送，谢谢！';
+		} catch (error) {
+			status.dataset.state = 'error';
+			status.textContent = error instanceof Error && error.message ? error.message : '发送失败，请稍后再试';
+		} finally {
+			button.disabled = false;
+		}
+	});
+</script>
+
+<style>
+	form {
+		display: grid;
+		gap: 16px;
+		width: min(480px, 100%);
+	}
+
+	label {
+		display: grid;
+		gap: 6px;
+		font-size: 14px;
+		color: #374151;
+	}
+
+	input,
+	textarea {
+		font: inherit;
+		padding: 10px 12px;
+		border: 1px solid #d1d5db;
+		border-radius: 8px;
+	}
+
+	.trap {
+		position: absolute;
+		left: -9999px;
+	}
+
+	button {
+		font: inherit;
+		padding: 10px 12px;
+		border: 0;
+		border-radius: 10px;
+		color: white;
+		background: linear-gradient(83.21deg, #3245ff 0%, #bc52ee 100%);
+		cursor: pointer;
+	}
+
+	button:disabled {
+		opacity: 0.6;
+		cursor: wait;
+	}
+
+	#contact-status {
+		margin: 0;
+		min-height: 1.5em;
+		color: #4b5563;
+	}
+
+	#contact-status[data-state='ok'] {
+		color: #047857;
+	}
+
+	#contact-status[data-state='error'] {
+		color: #b91c1c;
+	}
+</style>
