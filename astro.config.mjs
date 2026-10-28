@@ -12,6 +12,6 @@ const isDev = process.argv.includes('dev');
 // https://astro.build/config
 export default defineConfig({
     session: false,
-    output: 'static',
+    output: 'server',
     integrations: [react(), markdoc(), ...(isDev ? [keystatic()] : [])]
 });
