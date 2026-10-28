@@ -6,7 +6,7 @@ import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
 
 // Keystatic injects on-demand /keystatic routes. Local storage only works in
-// `astro dev`, so production stays fully static for Cloudflare Pages.
+// `astro dev`, so the Workers deploy stays a static asset build.
 const isDev = process.argv.includes('dev');
 
 // https://astro.build/config
